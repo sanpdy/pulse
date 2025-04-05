@@ -38,8 +38,8 @@ Features:
 - ⏱️ **Pomodoro Timer**
   - Focus in 25-minute bursts with scheduled breaks.
   - Motion detection via **gyroscope/accelerometer** — if you pick up your phone during focus time, a cat photo appears to nudge you gently back on track 🐱.
-- 💬 **Searganet – Your Motivational Strategist**
-  - Chat with **Searganet**, a Gemini-powered AI productivity assistant.
+- 💬 **Sergeant – Your Motivational Strategist**
+  - Chat with **Sergeant**, a Gemini-powered AI productivity assistant.
   - Get help breaking down big tasks, setting goals, or just finding motivation to begin.
 
 ---
@@ -65,14 +65,14 @@ Features:
 - Mood-predicting "Aura Forecast"
 - Real-time productivity/mindfulness insights dashboard
 - AI-generated dreamscapes
-- Deeper Sage/Searganet integration with tone analysis
+- Deeper Sage/Sergeant integration with tone analysis
 
 ---
 
 ## 🛠️ Installation
 
 ```bash
-git clone https://github.com/yourusername/flowforge.git
+git clone https://github.com/sanpdy/flowforge.git
 cd flowforge
 npm install
 npx expo start
