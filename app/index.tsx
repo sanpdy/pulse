@@ -1,12 +1,13 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
+import { TwilioConnector } from '@/components/TwilioConnector';
 
 export default function WelcomeScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to Pulse</Text>
       <Text style={styles.subtitle}>Choose your path</Text>
-      
+      <TwilioConnector></TwilioConnector>
       <View style={styles.optionsContainer}>
         <TouchableOpacity 
           style={[styles.option, styles.zenOption]} 
