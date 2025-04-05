@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Button, Text } from 'react-native';
 import { sendWhatsAppMessage } from './utils/twilioUtils'; // Adjust the import path as needed
+import { TWILIO_WHATSAPP_TO } from '@env';
 
 export function TwilioConnector() {
   const [messageStatus, setMessageStatus] = useState('');
 
   const handleSendMessage = async () => {
     try {
-      const status = await sendWhatsAppMessage('+18702060116', 'Hello from WhatsApp!');
+      const status = await sendWhatsAppMessage(TWILIO_WHATSAPP_TO, 'Hello from WhatsApp!');
       setMessageStatus(status);
     } catch (error: any) {
       setMessageStatus(`Error: ${error.message}`);
