@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 150,
     overflow: 'hidden',
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   optionImage: {
     flex: 1,
