@@ -1,46 +1,126 @@
-import React, { useState } from 'react';
+// SoundscapesScreen.tsx
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Audio } from 'expo-av';
+import Header from './Header';
+
+// Import sound files
+const rainSound = require('../../assets/sounds/rain.mp3');
+const forestSound = require('../../assets/sounds/forest.mp3');
+const oceanSound = require('../../assets/sounds/ocean.mp3');
+const windSound = require('../../assets/sounds/wind.mp3');
+const fireSound = require('../../assets/sounds/fire.mp3');
+const cafeSound = require('../../assets/sounds/cafe.mp3');
 
 type SoundOption = {
   id: string;
   title: string;
   icon: string;
   isPlaying: boolean;
+  sound: Audio.Sound | null;
+  soundFile: any;
 };
 
 export default function SoundscapesScreen() {
   const [sounds, setSounds] = useState<SoundOption[]>([
-    { id: 'rain', title: 'Rain', icon: 'water-drop', isPlaying: false },
-    { id: 'forest', title: 'Forest', icon: 'park', isPlaying: false },
-    { id: 'waves', title: 'Ocean Waves', icon: 'waves', isPlaying: false },
-    { id: 'wind', title: 'Wind', icon: 'air', isPlaying: false },
-    { id: 'fire', title: 'Fire', icon: 'local-fire-department', isPlaying: false },
-    { id: 'birds', title: 'Birds', icon: 'flutter-dash', isPlaying: false },
+    { id: 'rain', title: 'Rain', icon: 'water-drop', isPlaying: false, sound: null, soundFile: rainSound },
+    { id: 'forest', title: 'Forest', icon: 'park', isPlaying: false, sound: null, soundFile: forestSound },
+    { id: 'ocean', title: 'Ocean Waves', icon: 'waves', isPlaying: false, sound: null, soundFile: oceanSound },
+    { id: 'wind', title: 'Wind', icon: 'air', isPlaying: false, sound: null, soundFile: windSound },
+    { id: 'fire', title: 'Fire', icon: 'local-fire-department', isPlaying: false, sound: null, soundFile: fireSound },
+    { id: 'cafe', title: 'cafe', icon: 'local-cafe', isPlaying: false, sound: null, soundFile: cafeSound },
   ]);
 
-  const toggleSound = (id: string) => {
-    setSounds(sounds.map(sound => 
-      sound.id === id ? { ...sound, isPlaying: !sound.isPlaying } : sound
-    ));
+  useEffect(() => {
+    // Request audio permissions
+    const requestPermissions = async () => {
+      try {
+        const { status } = await Audio.requestPermissionsAsync();
+        if (status !== 'granted') {
+          console.log('Audio permissions not granted');
+          return;
+        }
+        console.log('Audio permissions granted');
+      } catch (error) {
+        console.error('Error requesting audio permissions:', error);
+      }
+    };
+
+    requestPermissions();
+
+    // Load all sounds when component mounts
+    const loadSounds = async () => {
+      try {
+        const loadedSounds = await Promise.all(
+          sounds.map(async (sound) => {
+            try {
+              console.log(`Loading sound: ${sound.id}`);
+              const { sound: audioObject } = await Audio.Sound.createAsync(
+                sound.soundFile,
+                { 
+                  isLooping: true,
+                  shouldPlay: false,
+                  volume: 0.2 // Set a quiet volume level
+                }
+              );
+              console.log(`Successfully loaded sound: ${sound.id}`);
+              return { ...sound, sound: audioObject };
+            } catch (error) {
+              console.error(`Error loading sound ${sound.id}:`, error);
+              return { ...sound, sound: null };
+            }
+          })
+        );
+        setSounds(loadedSounds);
+      } catch (error) {
+        console.error('Error in loadSounds:', error);
+      }
+    };
+
+    loadSounds();
+
+    // Cleanup function to unload sounds when component unmounts
+    return () => {
+      sounds.forEach(sound => {
+        if (sound.sound) {
+          sound.sound.unloadAsync().catch(error => {
+            console.error(`Error unloading sound ${sound.id}:`, error);
+          });
+        }
+      });
+    };
+  }, []);
+
+  const toggleSound = async (id: string) => {
+    const sound = sounds.find(s => s.id === id);
+    if (!sound || !sound.sound) {
+      console.log(`Sound ${id} not found or not loaded`);
+      return;
+    }
+
+    try {
+      if (sound.isPlaying) {
+        console.log(`Pausing sound: ${id}`);
+        await sound.sound.pauseAsync();
+      } else {
+        console.log(`Playing sound: ${id}`);
+        await sound.sound.playAsync();
+      }
+
+      setSounds(sounds.map(s => 
+        s.id === id ? { ...s, isPlaying: !s.isPlaying } : s
+      ));
+    } catch (error) {
+      console.error(`Error toggling sound ${id}:`, error);
+    }
   };
 
   return (
     <View style={styles.container}>
       <StatusBar style="light" hidden />
-      
-      <View style={styles.header}>
-        <TouchableOpacity 
-          style={styles.backButton}
-          onPress={() => router.back()}
-        >
-          <MaterialIcons name="arrow-back" size={24} color="#FFFFFF" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Soundscapes</Text>
-      </View>
-
+      <Header title="Soundscapes" />
       <ScrollView style={styles.content}>
         <View style={styles.grid}>
           {sounds.map((sound) => (
@@ -75,20 +155,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#2A3A2C',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-    paddingTop: 80,
-  },
-  backButton: {
-    marginRight: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '500',
-    color: '#FFFFFF',
-  },
   content: {
     flex: 1,
   },
@@ -122,4 +188,4 @@ const styles = StyleSheet.create({
   playingText: {
     color: '#4CAF50',
   },
-}); 
+});

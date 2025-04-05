@@ -1,21 +1,10 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  TouchableOpacity,
-  Easing,
-  SafeAreaView,
-} from 'react-native';
-import { useRef, useState, useEffect } from 'react';
-import { router } from 'expo-router';
+// breathing.tsx
+import React, { useRef, useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Animated, TouchableOpacity, Easing } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import Header from './Header';
 
 type BreathingPhase = 'inhale' | 'hold' | 'exhale';
-
-export const unstable_settings = {
-  headerShown: false,
-};
 
 const breathingPatterns = [
   { name: '4-7-8', inhale: 4000, hold: 7000, exhale: 8000 },
@@ -29,7 +18,6 @@ export default function BreathingScreen() {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const glowAnim = useRef(new Animated.Value(0)).current;
 
-  // Continuous glow animation for the circle's shadow
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
@@ -49,7 +37,6 @@ export default function BreathingScreen() {
     ).start();
   }, [glowAnim]);
 
-  // Breathing cycle animation
   useEffect(() => {
     if (!isActive) return;
 
@@ -97,19 +84,13 @@ export default function BreathingScreen() {
     scaleAnim.setValue(1);
   };
 
-  const goBack = () => {
-    router.back();
-  };
-
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar style="light" hidden />
+      <Header title="Breathing Exercises" />
 
-      {/* Header: Back button and pattern selector */}
-      <View style={styles.headerContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={goBack}>
-          <Text style={styles.backButtonText}>← Back</Text>
-        </TouchableOpacity>
+      {/* Reserve space for the pattern selector */}
+      <View style={styles.patternSelectorContainer}>
         {!isActive && (
           <View style={styles.patternSelector}>
             {breathingPatterns.map((pattern, index) => (
@@ -128,69 +109,66 @@ export default function BreathingScreen() {
         )}
       </View>
 
-      {/* Center: Breathing circle with glow */}
       <View style={styles.centerContainer}>
-        <Animated.View
-          style={[
-            styles.glowContainer,
-            {
-              shadowColor: '#00FF9D',
-              shadowOffset: { width: 0, height: 0 },
-              shadowOpacity: glowAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0.4, 0.6],
-              }),
-              shadowRadius: glowAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [8, 12],
-              }),
-            },
-          ]}
-        >
-          <Animated.View
-            style={[
-              styles.circle,
-              {
-                transform: [{ scale: scaleAnim }],
-              },
-            ]}
-          >
-            <Text style={styles.phaseText}>{currentPhase.toUpperCase()}</Text>
-          </Animated.View>
-        </Animated.View>
+        {/* Pass isActive to Bloom to conditionally show the text */}
+        <Bloom scaleAnim={scaleAnim} currentPhase={currentPhase} isActive={isActive} />
       </View>
 
-      {/* Footer: Control button */}
       <View style={styles.footerContainer}>
         <TouchableOpacity
-          style={[styles.controlButton, styles.breathingButton]}
+          style={styles.startButton}
           onPress={isActive ? stopBreathing : startBreathing}
         >
-          <Text style={styles.controlButtonText}>
+          <Text style={styles.patternText}>
             {isActive ? 'Exit' : 'Start Breathing'}
           </Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
+  );
+}
+
+function Bloom({ scaleAnim, currentPhase, isActive }: { scaleAnim: Animated.Value; currentPhase: BreathingPhase; isActive: boolean }) {
+  const petalCount = 6;
+  return (
+    <View style={styles.bloomContainer}>
+      {Array.from({ length: petalCount }).map((_, i) => {
+        const angle = (360 / petalCount) * i;
+        return (
+          <Animated.View
+            key={i}
+            style={[
+              styles.petal,
+              {
+                transform: [
+                  { rotate: `${angle}deg` },
+                  { translateY: -80 },
+                  { scale: scaleAnim }
+                ]
+              }
+            ]}
+          />
+        );
+      })}
+      {/* Only show the text if breathing is active */}
+      {isActive && (
+        <View style={styles.centerTextContainer}>
+          <Text style={styles.phaseText}>{currentPhase.toUpperCase()}</Text>
+        </View>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
+    backgroundColor: '#2A3A2C',
   },
-  headerContainer: {
-    marginTop: 20,
-  },
-  backButton: {
-    marginBottom: 10,
-  },
-  backButtonText: {
-    fontSize: 18,
-    color: '#00FF9D',
+  patternSelectorContainer: {
+    height: 50, // Reserve space even when buttons are hidden
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   patternSelector: {
     flexDirection: 'row',
@@ -202,12 +180,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginHorizontal: 8,
     borderRadius: 8,
-    backgroundColor: '#1A1A1A',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderWidth: 1,
-    borderColor: '#00FF9D',
+    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   selectedPattern: {
-    backgroundColor: '#00FF9D',
+    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+    borderColor: 'rgba(76, 175, 80, 0.3)',
   },
   patternText: {
     fontSize: 16,
@@ -219,18 +198,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  glowContainer: {
-    borderRadius: 120,
-  },
-  circle: {
+  bloomContainer: {
     width: 240,
     height: 240,
-    borderRadius: 120,
-    backgroundColor: '#1A1A1A',
+    position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#00FF9D',
+  },
+  petal: {
+    position: 'absolute',
+    width: 100,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  },
+  centerTextContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   phaseText: {
     fontSize: 24,
@@ -242,21 +227,14 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     alignItems: 'center',
   },
-  controlButton: {
-    padding: 16,
+  startButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
     borderRadius: 8,
     minWidth: 200,
     alignItems: 'center',
-  },
-  breathingButton: {
-    backgroundColor: '#00FF9D',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderWidth: 1,
-    borderColor: '#00FF9D',
-  },
-  controlButtonText: {
-    fontSize: 18,
-    fontWeight: '500',
-    color: '#000000',
-    letterSpacing: 0.5,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
 });
