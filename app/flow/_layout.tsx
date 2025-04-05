@@ -2,7 +2,7 @@ import React from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
-export default function ZenLayout() {
+export default function FlowLayout() {
   return (
     <>
       <StatusBar style="light" hidden />
@@ -11,12 +11,9 @@ export default function ZenLayout() {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="meditations" />
         <Stack.Screen name="breathing" />
-        <Stack.Screen name="quotes" />
-        <Stack.Screen name="gratitude" />
         <Stack.Screen name="soundscapes" />
-        <Stack.Screen name="challenges" />
+        <Stack.Screen name="quotes" />
       </Stack>
     </>
   );

@@ -1,63 +1,34 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 export default function WelcomeScreen() {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const translateYAnim = useRef(new Animated.Value(100)).current;
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 800,
-        useNativeDriver: true,
-      }),
-      Animated.timing(translateYAnim, {
-        toValue: 0,
-        duration: 800,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, []);
-
   return (
     <View style={styles.container}>
       <StatusBar style="light" hidden />
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Pulse</Text>
-      </View>
-      <Animated.View style={[styles.content, {
-        opacity: fadeAnim,
-        transform: [{ translateY: translateYAnim }],
-      }]}>
-        {/* Left side - Zen */}
-        <TouchableOpacity 
-          style={styles.option} 
-          onPress={() => router.push('/(tabs)/zen')}
-        >
-          <View style={[styles.optionBackground, styles.zenBackground]}>
-            <View style={styles.dotPattern} />
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.optionText}>Zen</Text>
-          </View>
-        </TouchableOpacity>
+      
+      <View style={styles.content}>
+        <Text style={styles.title}>FlowForge</Text>
+        
+        <View style={styles.optionsContainer}>
+          <TouchableOpacity 
+            style={[styles.option, styles.flowOption]} 
+            onPress={() => router.push('/(tabs)/flow')}
+          >
+            <Text style={styles.optionText}>Flow</Text>
+            <Text style={styles.optionDescription}>Find your peace</Text>
+          </TouchableOpacity>
 
-        {/* Right side - Grind */}
-        <TouchableOpacity 
-          style={styles.option} 
-          onPress={() => router.push('/(tabs)/grind')}
-        >
-          <View style={[styles.optionBackground, styles.grindBackground]}>
-            <View style={styles.dotPattern} />
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.optionText}>Grind</Text>
-          </View>
-        </TouchableOpacity>
-      </Animated.View>
+          <TouchableOpacity 
+            style={[styles.option, styles.forgeOption]} 
+            onPress={() => router.push('/(tabs)/forge')}
+          >
+            <Text style={styles.optionText}>Forge</Text>
+            <Text style={styles.optionDescription}>Push your limits</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
@@ -65,72 +36,48 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#FFFFFF',
   },
-  titleContainer: {
-    position: 'absolute',
-    top: 100,
-    left: 0,
-    right: 0,
-    alignItems: 'center',
-    zIndex: 1,
+  content: {
+    flex: 1,
+    padding: 20,
+    paddingTop: 80,
   },
   title: {
     fontSize: 48,
     fontWeight: '300',
-    color: '#FFFFFF',
+    color: '#2A3A2C',
+    textAlign: 'center',
+    marginBottom: 60,
     letterSpacing: 8,
   },
-  content: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  option: {
-    flex: 1,
-    height: '100%',
-    overflow: 'hidden',
-  },
-  optionBackground: {
-    ...StyleSheet.absoluteFillObject,
-    opacity: 0.9,
-  },
-  zenBackground: {
-    backgroundColor: '#4A5D4C',
-  },
-  grindBackground: {
-    backgroundColor: '#6A1B1B',
-  },
-  dotPattern: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-  },
-  textContainer: {
+  optionsContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
+    gap: 20,
   },
-  optionEmoji: {
-    fontSize: 50,
-    marginBottom: 10,
-    color: '#FFFFFF',
+  option: {
+    padding: 25,
+    borderRadius: 15,
+    alignItems: 'center',
+    borderWidth: 1,
+  },
+  flowOption: {
+    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+    borderColor: 'rgba(76, 175, 80, 0.3)',
+  },
+  forgeOption: {
+    backgroundColor: 'rgba(255, 138, 128, 0.1)',
+    borderColor: 'rgba(255, 138, 128, 0.3)',
   },
   optionText: {
-    fontSize: 36,
-    fontWeight: '300',
-    color: '#FFFFFF',
+    fontSize: 28,
+    fontWeight: '500',
+    color: '#2A3A2C',
     marginBottom: 8,
-    letterSpacing: 4,
-    fontFamily: 'SpaceMono',
-    textAlign: 'center',
-    width: '100%',
   },
-  optionSubtext: {
-    fontSize: 14,
-    color: '#999999',
-    letterSpacing: 2,
-    fontFamily: 'SpaceMono',
-    textAlign: 'center',
-    width: '100%',
+  optionDescription: {
+    fontSize: 16,
+    color: '#666666',
   },
-}); 
+});

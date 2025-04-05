@@ -1,12 +1,12 @@
 import { Tabs } from 'expo-router';
-import { Text } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function TabLayout() {
   return (
     <Tabs screenOptions={{
       headerShown: false,
       tabBarStyle: {
-        backgroundColor: '#000000',
+        backgroundColor: '#2A3A2C',
         borderTopWidth: 1,
         borderTopColor: 'rgba(255, 255, 255, 0.1)',
         height: 60,
@@ -20,17 +20,17 @@ export default function TabLayout() {
       },
     }}>
       <Tabs.Screen
-        name="zen"
+        name="flow"
         options={{
-          title: 'ZEN',
-          tabBarIcon: () => <Text style={{ fontSize: 24 }}>🧘‍♂️</Text>,
+          title: 'Flow',
+          tabBarIcon: ({ color }) => <MaterialIcons name="self-improvement" size={24} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="grind"
+        name="forge"
         options={{
-          title: 'GRIND',
-          tabBarIcon: () => <Text style={{ fontSize: 24 }}>🏋️</Text>,
+          title: 'Forge',
+          tabBarIcon: ({ color }) => <MaterialIcons name="fitness-center" size={24} color={color} />,
         }}
       />
     </Tabs>
