@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, Image } from 'react-native';
 import { Gyroscope } from 'expo-sensors';
 
-export default function GyroscopeToggle() {
+export default function GyroscopeDisplay() {
   const [isMonitoring, setIsMonitoring] = useState(false);
   const [subscription, setSubscription] = useState<any>(null);
   const [gyroscopeData, setGyroscopeData] = useState({ x: 0, y: 0, z: 0 });
-  const [showCatImage, setShowCatImage] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [randomImage, setRandomImage] = useState<string | null>(null);
+
+  // Array of image paths
+  const images = [
+    require('../assets/images/dontquit.jpg'),
+    require('../assets/images/hanginthere.jpg'),
+    require('../assets/images/flat,750x,075,f-pad,750x1000,f8f8f8.jpg'),
+  ];
 
   const stopMonitoring = () => {
     subscription?.remove();
@@ -16,17 +24,18 @@ export default function GyroscopeToggle() {
 
   const toggleMonitoring = () => {
     if (isMonitoring) {
-      // Stop monitoring
       stopMonitoring();
     } else {
-      // Start monitoring
       Gyroscope.setUpdateInterval(400); // 400ms
       const newSubscription = Gyroscope.addListener(({ x, y, z }) => {
         setGyroscopeData({ x, y, z });
         const rotation = Math.sqrt(x * x + y * y + z * z);
         if (rotation > 1.5) {
-          stopMonitoring(); // Stop monitoring immediately
-          setShowCatImage(true); // Show the cat image
+          stopMonitoring();
+          // Randomize the image to display
+          const randomIndex = Math.floor(Math.random() * images.length);
+          setRandomImage(images[randomIndex]);
+          setShowModal(true);
         }
       });
       setSubscription(newSubscription);
@@ -35,36 +44,34 @@ export default function GyroscopeToggle() {
   };
 
   useEffect(() => {
-    // Cleanup subscription on unmount
     return () => subscription?.remove();
   }, [subscription]);
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={[styles.button, isMonitoring ? styles.buttonActive : styles.buttonInactive]}
+        style={[styles.button19, isMonitoring ? styles.buttonActive : styles.buttonInactive]}
         onPress={toggleMonitoring}
       >
         <Text style={styles.buttonText}>
-          {isMonitoring ? 'Stop Monitoring' : 'Start Monitoring'}
+          {isMonitoring ? 'Stop Monitoring' : 'Lock In'}
         </Text>
       </TouchableOpacity>
       <Modal
-        visible={showCatImage}
+        visible={showModal}
         transparent={true}
         animationType="slide"
-        onRequestClose={() => setShowCatImage(false)}
+        onRequestClose={() => setShowModal(false)}
       >
         <View style={styles.modalContainer}>
-          <Image
-            source={require('../assets/images/flat,750x,075,f-pad,750x1000,f8f8f8.jpg')} // Use the local image
-            style={styles.fullScreenImage}
-          />
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => setShowCatImage(false)}
-          >
-            <Text style={styles.closeButtonText}>Close</Text>
+          {randomImage && (
+            <Image
+              source={randomImage}
+              style={styles.image}
+            />
+          )}
+          <TouchableOpacity style={styles.button19} onPress={() => setShowModal(false)}>
+            <Text style={styles.buttonText}>Close</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -77,35 +84,35 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F8FAFC',
+    backgroundColor: 'transparent',
     padding: 20,
   },
-  button: {
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 10,
+  button19: {
+    backgroundColor: '#1899D6',
+    borderRadius: 16,
+    borderWidth: 0,
+    paddingVertical: 13,
+    paddingHorizontal: 16,
+    textAlign: 'center',
+    width: '100%',
+    marginVertical: 10,
+    shadowColor: '#000', // Add shadow for depth
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5, // For Android shadow
   },
   buttonActive: {
-    backgroundColor: '#28A745',
+    backgroundColor: '#1CB0F6',
   },
   buttonInactive: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#1899D6',
   },
   buttonText: {
     color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  dataContainer: {
-    position: 'absolute',
-    bottom: 20,
-    alignItems: 'center',
-  },
-  dataText: {
-    fontSize: 16,
-    color: '#374151',
-    marginVertical: 2,
+    fontSize: 15,
+    fontWeight: '700',
+    textTransform: 'uppercase',
   },
   modalContainer: {
     flex: 1,
@@ -113,21 +120,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
-  fullScreenImage: {
-    width: '100%', // Make the image fill the width of the screen
-    height: '80%', // Adjust the height to fill most of the screen
-    resizeMode: 'contain', // Ensure the image maintains its aspect ratio
-  },
-  closeButton: {
-    marginTop: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#FFFFFF',
+  image: {
+    width: 300,
+    height: 300,
     borderRadius: 10,
-  },
-  closeButtonText: {
-    color: '#000000',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });

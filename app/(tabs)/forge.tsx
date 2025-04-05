@@ -1,12 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import GyroscopeDisplay from '@/components/GyroscopeDisplay';
+import { PomodoroTimer } from '@/components/PomodoroTimer';
 
 export default function ForgeScreen() {
   return (
     <View style={styles.container}>
       <StatusBar style="light" hidden />
       <Text style={styles.text}>Forge</Text>
+      <GyroscopeDisplay></GyroscopeDisplay>
+      <PomodoroTimer></PomodoroTimer>
     </View>
   );
 }
