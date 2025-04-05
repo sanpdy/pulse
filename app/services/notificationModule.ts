@@ -47,7 +47,7 @@ export async function scheduleTaskNotifications(
 }
 
 // cancel a tasks notification if marked as done
-export async function cancelTaskNotifications({notification_ids} : {notification_ids: number[]}) {
+export async function cancelTaskNotifications({notification_ids} : {notification_ids: string[]}) {
     for (const id of notification_ids) {
         if (id) await Notifications.cancelScheduledNotificationAsync(id);
     }
