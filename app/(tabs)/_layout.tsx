@@ -1,36 +1,42 @@
 import { Tabs } from 'expo-router';
-import { MaterialIcons } from '@expo/vector-icons';
+import { useColorScheme } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function TabLayout() {
+  const colorScheme = useColorScheme();
+
   return (
-    <Tabs screenOptions={{
-      headerShown: false,
-      tabBarStyle: {
-        backgroundColor: '#2A3A2C',
-        borderTopWidth: 1,
-        borderTopColor: 'rgba(255, 255, 255, 0.1)',
-        height: 60,
-        paddingBottom: 8,
-      },
-      tabBarActiveTintColor: '#FFFFFF',
-      tabBarInactiveTintColor: '#666666',
-      tabBarLabelStyle: {
-        fontSize: 12,
-        fontWeight: '500',
-      },
-    }}>
+    <Tabs
+      screenOptions={({ route }) => ({
+        tabBarActiveTintColor: '#FFFFFF',
+        tabBarInactiveTintColor: 'rgba(255, 255, 255, 0.7)',
+        tabBarStyle: {
+          backgroundColor: route.name === 'flow' ? '#2A3A2C' : '#330000',
+          borderTopWidth: 0,
+          elevation: 0,
+          shadowOpacity: 0,
+          height: 60,
+          paddingBottom: 8,
+        },
+        headerShown: false,
+      })}
+    >
       <Tabs.Screen
         name="flow"
         options={{
           title: 'Flow',
-          tabBarIcon: ({ color }) => <MaterialIcons name="self-improvement" size={24} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="leaf" size={24} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="forge"
         options={{
           title: 'Forge',
-          tabBarIcon: ({ color }) => <MaterialIcons name="fitness-center" size={24} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="fire" size={24} color={color} />
+          ),
         }}
       />
     </Tabs>

@@ -1,48 +1,63 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
+const menuOptions = [
+  {
+    id: 'breathing',
+    title: 'Breathing',
+    description: 'Calm your mind',
+    image: require('../../assets/images/breathing.jpg'),
+  },
+  {
+    id: 'soundscapes',
+    title: 'Soundscapes',
+    description: 'Ambient sounds',
+    image: require('../../assets/images/soundscapes.jpg'),
+  },
+  {
+    id: 'quotes',
+    title: 'Quotes',
+    description: 'Find inspiration',
+    image: require('../../assets/images/quotes.jpg'),
+  },
+  {
+    id: 'chat',
+    title: 'Sage',
+    description: 'Talk with a Zen therapist',
+    image: require('../../assets/images/chat.jpg'),
+  },
+];
+
 export default function FlowScreen() {
   return (
+    
     <View style={styles.container}>
       <StatusBar style="light" hidden />
       
       <View style={styles.content}>
         <Text style={styles.title}>Flow</Text>
         
-        <View style={styles.optionsContainer}>
-          <TouchableOpacity 
-            style={[styles.option, styles.breathingOption]} 
-            onPress={() => router.push('/flow/breathing')}
-          >
-            <Text style={styles.optionText}>Breathing</Text>
-            <Text style={styles.optionDescription}>Calm your mind</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.option, styles.soundscapesOption]} 
-            onPress={() => router.push('/flow/soundscapes')}
-          >
-            <Text style={styles.optionText}>Soundscapes</Text>
-            <Text style={styles.optionDescription}>Ambient sounds</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.option, styles.quotesOption]} 
-            onPress={() => router.push('/flow/quotes')}
-          >
-            <Text style={styles.optionText}>Quotes</Text>
-            <Text style={styles.optionDescription}>Find inspiration</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.option, styles.chatOption]} 
-            onPress={() => router.push('/flow/chat')}
-          >
-            <Text style={styles.optionText}>Sage</Text>
-            <Text style={styles.optionDescription}>Talk with a Zen therapist</Text>
-          </TouchableOpacity>
+        <View style={styles.list}>
+          {menuOptions.map((option) => (
+            <TouchableOpacity
+              key={option.id}
+              style={styles.option}
+              onPress={() => router.push(`/flow/${option.id}`)}
+            >
+              <ImageBackground
+                source={option.image}
+                style={styles.optionImage}
+                imageStyle={styles.optionImageStyle}
+              >
+                <View style={styles.overlay}>
+                  <Text style={styles.optionTitle}>{option.title}</Text>
+                  <Text style={styles.optionDescription}>{option.description}</Text>
+                </View>
+              </ImageBackground>
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
     </View>
@@ -56,50 +71,48 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 20,
-    justifyContent: 'center',
+    paddingTop: 40,
+    paddingHorizontal: 24,
   },
   title: {
     fontSize: 48,
     fontWeight: '300',
     color: '#FFFFFF',
     textAlign: 'center',
-    marginBottom: 40,
+    marginTop: 30,
+    marginBottom: 30,
     letterSpacing: 8,
   },
-  optionsContainer: {
-    gap: 20,
+  list: {
+    marginHorizontal: -24, // Removes parent's horizontal padding for full-width
+    flexDirection: 'column',
   },
   option: {
-    padding: 25,
-    borderRadius: 15,
+    width: '100%',
+    height: 150, // Adjust height as needed
+    overflow: 'hidden',
+  },
+  optionImage: {
+    flex: 1,
+    justifyContent: 'center', // Centers the overlay content vertically
+  },
+  optionImageStyle: {
+    resizeMode: 'cover',
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Dark overlay applied uniformly
+    justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
   },
-  breathingOption: {
-    backgroundColor: 'rgba(76, 175, 80, 0.1)',
-    borderColor: 'rgba(76, 175, 80, 0.3)',
-  },
-  soundscapesOption: {
-    backgroundColor: 'rgba(76, 175, 80, 0.1)',
-    borderColor: 'rgba(76, 175, 80, 0.3)',
-  },
-  quotesOption: {
-    backgroundColor: 'rgba(76, 175, 80, 0.1)',
-    borderColor: 'rgba(76, 175, 80, 0.3)',
-  },
-  chatOption: {
-    backgroundColor: 'rgba(76, 175, 80, 0.1)',
-    borderColor: 'rgba(76, 175, 80, 0.3)',
-  },
-  optionText: {
-    fontSize: 28,
-    fontWeight: '500',
+  optionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
     color: '#FFFFFF',
-    marginBottom: 8,
+    marginBottom: 4,
   },
   optionDescription: {
-    fontSize: 16,
-    color: '#999999',
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.8)',
   },
 });
