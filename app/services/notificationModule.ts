@@ -44,6 +44,7 @@ export async function scheduleTaskNotifications(
         });
         ids.push(id); // notification ids for database
     }
+    return ids;
 }
 
 // cancel a tasks notification if marked as done

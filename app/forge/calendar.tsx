@@ -1,44 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, TextInput, SafeAreaView } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Calendar } from 'react-native-calendars';
 import { useRouter } from 'expo-router';
+import * as taskStorage from '@/app/services/taskStorage'
+import {requestNotificationPermissions, scheduleTaskNotifications} from "@/app/services/notificationModule";
 
-interface Task {
-  id: number;
-  title: string;
-  isCompleted: boolean;
-  date: string; // 'YYYY-MM-DD'
-}
 
 export default function TasksScreen() {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState(() => new Date().toISOString().split('T')[0]);
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<taskStorage.Task[]>([]);
   const [taskInput, setTaskInput] = useState('');
   const [currentStreak, setCurrentStreak] = useState(0);
   const [lastCheckedDate, setLastCheckedDate] = useState<string | null>(null);
 
   // Load tasks from AsyncStorage when the component mounts
   useEffect(() => {
-    const loadTasks = async () => {
-      try {
-        const storedTasks = await AsyncStorage.getItem('tasks');
-        if (storedTasks) {
-          setTasks(JSON.parse(storedTasks));
-        }
-      } catch (error) {
-        console.error('Error loading tasks:', error);
-      }
-    };
-    loadTasks();
+    taskStorage.loadTasks().then(setTasks);
   }, []);
 
   // Save tasks to AsyncStorage whenever they change
   useEffect(() => {
     const saveTasks = async () => {
       try {
-        await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+        await taskStorage.saveTasks(tasks);
       } catch (error) {
         console.error('Error saving tasks:', error);
       }
@@ -75,26 +60,36 @@ export default function TasksScreen() {
   };
 
   // Toggle task completion status
-  const toggleTaskCompletion = (taskId: number) => {
-    setTasks((prev) =>
-      prev.map((t) =>
-        t.id === taskId ? { ...t, isCompleted: !t.isCompleted } : t
-      )
-    );
+  const toggleTaskCompletion = async(taskId: number) => {
+    const updatedTasks = await taskStorage.markTaskAsDone(taskId);
+    setTasks(updatedTasks);
   };
 
   // Add a new task for the selected date
-  const addTask = () => {
+  const addTask = async () => {
     if (!taskInput.trim()) return;
 
-    const newTask: Task = {
-      id: tasks.length + 1,
-      title: taskInput,
-      isCompleted: false,
-      date: selectedDate,
-    };
-    setTasks((prev) => [...prev, newTask]);
-    setTaskInput('');
+    // request notification access
+    const granted = await requestNotificationPermissions();
+    if (!granted){// only save locally
+      alert('No Notification Permissions!');
+      await taskStorage.addTask(taskInput, selectedDate, []);
+      const updatedTasks = await taskStorage.loadTasks();
+      setTasks(updatedTasks);
+      setTaskInput('');
+    } else { // create notificaitons
+      // schedule notifications
+      const notif_ids = await scheduleTaskNotifications({
+        title: "Grind Alert!",// replace with actual title,
+        desc: taskInput,
+        date: new Date(selectedDate),
+      })
+
+      await taskStorage.addTask(taskInput, selectedDate, notif_ids);
+      const updatedTasks = await taskStorage.loadTasks();
+      setTasks(updatedTasks);
+      setTaskInput('');
+    }
   };
 
   // Only show tasks for the currently selected date
