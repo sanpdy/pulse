@@ -16,6 +16,12 @@ const menuOptions = [
     description: 'Get in line',
     image: require('../../assets/images/drill.jpg'),
   },
+  {
+    id: 'pomodoro',
+    title: 'Pomodoro',
+    description: 'Focus and track time',
+    // image: require('../../assets/images/pomodoro.jpg'),
+  },
 ];
 
 export default function ForgeScreen() {

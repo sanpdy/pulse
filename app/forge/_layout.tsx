@@ -13,6 +13,7 @@ export default function ForgeLayout() {
       >
         <Stack.Screen name="calendar" />
         <Stack.Screen name="seargant" />
+        <Stack.Screen name="pomodoro" />
       </Stack>
     </>
   );

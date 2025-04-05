@@ -50,10 +50,10 @@ export function PomodoroTimer() {
         }}
       </CountdownCircleTimer>
       <View style={styles.buttons}>
-      <TouchableOpacity style={[styles.button, { marginRight: 10 }]} onPress={() => setIsRunning((prev) => !prev)}>
+      <TouchableOpacity style={[styles.button]} onPress={() => setIsRunning((prev) => !prev)}>
         <Text style={styles.buttonText}>{isRunning ? 'Pause' : 'Start'}</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, { marginLeft: 10 }]} onPress={handleReset}>
+      <TouchableOpacity style={[styles.button]} onPress={handleReset}>
         <Text style={styles.buttonText}>Reset</Text>
       </TouchableOpacity>
     </View>
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flexDirection: 'row',
-    justifyContent: 'start', // Space buttons evenly
+    justifyContent: 'space-around', // Space buttons evenly
     alignItems: 'center', // Align buttons vertically
     marginTop: 20,
     width: '100%',
