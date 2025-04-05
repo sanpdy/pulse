@@ -110,8 +110,8 @@ export default function BreathingScreen() {
       </View>
 
       <View style={styles.centerContainer}>
-        {/* Replace the circle with the Bloom component */}
-        <Bloom scaleAnim={scaleAnim} currentPhase={currentPhase} />
+        {/* Pass isActive to Bloom to conditionally show the text */}
+        <Bloom scaleAnim={scaleAnim} currentPhase={currentPhase} isActive={isActive} />
       </View>
 
       <View style={styles.footerContainer}>
@@ -128,7 +128,7 @@ export default function BreathingScreen() {
   );
 }
 
-function Bloom({ scaleAnim, currentPhase }: { scaleAnim: Animated.Value; currentPhase: BreathingPhase }) {
+function Bloom({ scaleAnim, currentPhase, isActive }: { scaleAnim: Animated.Value; currentPhase: BreathingPhase; isActive: boolean }) {
   const petalCount = 6;
   return (
     <View style={styles.bloomContainer}>
@@ -150,9 +150,12 @@ function Bloom({ scaleAnim, currentPhase }: { scaleAnim: Animated.Value; current
           />
         );
       })}
-      <View style={styles.centerTextContainer}>
-        <Text style={styles.phaseText}>{currentPhase.toUpperCase()}</Text>
-      </View>
+      {/* Only show the text if breathing is active */}
+      {isActive && (
+        <View style={styles.centerTextContainer}>
+          <Text style={styles.phaseText}>{currentPhase.toUpperCase()}</Text>
+        </View>
+      )}
     </View>
   );
 }
