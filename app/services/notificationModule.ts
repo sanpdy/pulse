@@ -1,6 +1,4 @@
 import * as Notifications from 'expo-notifications'
-import * as Permissions from 'expo-notifications'
-import { Platform } from "react-native";
 
 // function to request notification permission for setting notifications
 export async function requestNotificationPermissions() {
@@ -9,10 +7,10 @@ export async function requestNotificationPermissions() {
 }
 
 // function to schedule notifications provided a title, description, and time
-export async function scheduleNotification(
+export async function scheduleTaskNotifications(
     {title, desc, date,} : {title: string, desc: string, date: Date}
 ) {
-    await Notifications.setNotificationHandler({
+    Notifications.setNotificationHandler({
         handleNotification: async () => ({
             shouldShowAlert: true,
             shouldPlaySound: false,
@@ -25,44 +23,32 @@ export async function scheduleNotification(
     const month = date.getMonth();
     const day = date.getDate();
     // create the three notification times
-    const sixAM = new Date(year, month, day, 6, 0, 0, 0);
-    const twelvePM = new Date(year, month, day, 12, 0, 0, 0);
-    const sixPM = new Date(year, month, day, 18, 0, 0, 0);
+    const times = [
+        new Date(year, month, day, 6, 0, 0, 0),// six am
+        new Date(year, month, day, 12, 0, 0, 0),// twelve pm
+        new Date(year, month, day, 18, 0, 0, 0),// six pm
+    ]
+    const ids =[];
+    // schedule the three notifications
+    for (let i = 0; i < times.length; i++) {
+        const id = await Notifications.scheduleNotificationAsync({
+            content: {
+                title,
+                body: desc,
+                categoryIdentifier: undefined,
+            },
+            trigger: {
+                type: Notifications.SchedulableTriggerInputTypes.DATE,
+                date: times[i],
+            }
+        });
+        ids.push(id); // notification ids for database
+    }
+}
 
-    return async () => {
-        // schedule the three notifications
-        await Notifications.scheduleNotificationAsync({
-            content: {
-                title,
-                body: desc,
-                categoryIdentifier: undefined,
-            },
-            trigger: {
-                type: Notifications.SchedulableTriggerInputTypes.DATE,
-                date: sixAM,
-            },
-        })
-        await Notifications.scheduleNotificationAsync({
-            content: {
-                title,
-                body: desc,
-                categoryIdentifier: undefined,
-            },
-            trigger: {
-                type: Notifications.SchedulableTriggerInputTypes.DATE,
-                date: twelvePM,
-            },
-        })
-        await Notifications.scheduleNotificationAsync({
-            content: {
-                title,
-                body: desc,
-                categoryIdentifier: undefined,
-            },
-            trigger: {
-                type: Notifications.SchedulableTriggerInputTypes.DATE,
-                date: sixPM,
-            },
-        })
+// cancel a tasks notification if marked as done
+export async function cancelTaskNotifications({notification_ids} : {notification_ids: number[]}) {
+    for (const id of notification_ids) {
+        if (id) await Notifications.cancelScheduledNotificationAsync(id);
     }
 }

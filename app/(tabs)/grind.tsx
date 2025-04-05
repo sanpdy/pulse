@@ -1,6 +1,6 @@
 import {View, Text, Button} from 'react-native';
 import { requestNotificationPermissions, scheduleNotification } from "@/app/services/notificationModule";
-import {string} from "prop-types";
+
 
 export default function GrindScreen() {
     const handleBtn = async () => {
@@ -12,7 +12,7 @@ export default function GrindScreen() {
         await scheduleNotification({
             title: "Zen Forging",
             desc: (Date.now() + 4 * 60 * 60 * 1000) + " You Were Saying? " + Date.now(),
-            time: new Date(),// 10 seconds
+            date: new Date(),// 10 seconds
         });
 
         alert("Notification Set?");
