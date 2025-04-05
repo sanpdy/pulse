@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, TextInput, SafeAreaView } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { useRouter } from 'expo-router';
-import * as taskStorage from '@/app/services/taskStorage'
-import {requestNotificationPermissions, scheduleTaskNotifications} from "@/app/services/notificationModule";
-
+import * as taskStorage from '../../services/taskStorage';
+import { requestNotificationPermissions, scheduleTaskNotifications } from "../../services/notificationModule";
 
 export default function TasksScreen() {
   const router = useRouter();
@@ -31,7 +30,7 @@ export default function TasksScreen() {
     saveTasks();
   }, [tasks]);
 
-  // Every time the tasks update (or when the component mounts), check if we’ve crossed midnight
+  // Every time the tasks update (or when the component mounts), check if we've crossed midnight
   useEffect(() => {
     const now = new Date();
     const currentDate = now.toISOString().split('T')[0];
@@ -42,7 +41,7 @@ export default function TasksScreen() {
     }
   }, [tasks, lastCheckedDate]);
 
-  // Check whether yesterday’s tasks were all completed
+  // Check whether yesterday's tasks were all completed
   const checkYesterdayTasks = () => {
     const now = new Date();
     const yesterday = new Date(now);
@@ -50,45 +49,66 @@ export default function TasksScreen() {
     const yesterdayStr = yesterday.toISOString().split('T')[0];
 
     const yesterdayTasks = tasks.filter((t) => t.date === yesterdayStr);
-    const allDone = yesterdayTasks.every((t) => t.isCompleted);
+    const allDone = yesterdayTasks.length > 0 && yesterdayTasks.every((t) => t.isCompleted);
 
     if (allDone) {
       setCurrentStreak((prev) => prev + 1);
-    } else {
+    } else if (yesterdayTasks.length > 0) {
       setCurrentStreak(0);
     }
   };
 
   // Toggle task completion status
-  const toggleTaskCompletion = async(taskId: number) => {
-    const updatedTasks = await taskStorage.markTaskAsDone(taskId);
-    setTasks(updatedTasks);
+  const toggleTaskCompletion = async (taskId: number) => {
+    try {
+      // Get the updated tasks array from the storage helper
+      const updatedTasks = await taskStorage.markTaskAsDone(taskId);
+
+      // Update the state with the new tasks array
+      setTasks(updatedTasks);
+    } catch (error) {
+      console.error('Error toggling task completion:', error);
+    }
+  };
+
+  // Delete a task
+  const deleteTask = async (taskId: number) => {
+    try {
+      const updatedTasks = await taskStorage.deleteTask(taskId);
+      setTasks(updatedTasks);
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
   };
 
   // Add a new task for the selected date
   const addTask = async () => {
     if (!taskInput.trim()) return;
 
-    // request notification access
-    const granted = await requestNotificationPermissions();
-    if (!granted){// only save locally
-      alert('No Notification Permissions!');
-      await taskStorage.addTask(taskInput, selectedDate, []);
-      const updatedTasks = await taskStorage.loadTasks();
-      setTasks(updatedTasks);
-      setTaskInput('');
-    } else { // create notificaitons
-      // schedule notifications
-      const notif_ids = await scheduleTaskNotifications({
-        title: "Grind Alert!",// replace with actual title,
-        desc: taskInput,
-        date: new Date(selectedDate),
-      })
+    try {
+      // Request notification access
+      const granted = await requestNotificationPermissions();
+      if (!granted) {
+        // Only save locally if permission is not granted
+        alert('No Notification Permissions!');
+        await taskStorage.addTask(taskInput, selectedDate, []);
+      } else {
+        // Schedule notifications if permissions are granted
+        const notif_ids = await scheduleTaskNotifications({
+          title: "Grind Alert!",
+          desc: taskInput,
+          date: new Date(selectedDate),
+        });
 
-      await taskStorage.addTask(taskInput, selectedDate, notif_ids);
+        await taskStorage.addTask(taskInput, selectedDate, notif_ids);
+      }
+
+      // Reload tasks after adding
       const updatedTasks = await taskStorage.loadTasks();
       setTasks(updatedTasks);
       setTaskInput('');
+    } catch (error) {
+      console.error('Error adding task:', error);
     }
   };
 
@@ -139,13 +159,22 @@ export default function TasksScreen() {
         data={filteredTasks}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => toggleTaskCompletion(item.id)}>
-            <View style={styles.taskItem}>
-              <Text style={[styles.taskText, item.isCompleted && { textDecorationLine: 'line-through', opacity: 0.5 }]}>
+          <View style={styles.taskRow}>
+            <TouchableOpacity
+              style={[styles.taskItem, item.isCompleted && styles.completedTaskItem]}
+              onPress={() => toggleTaskCompletion(item.id)}
+            >
+              <Text style={[styles.taskText, item.isCompleted && styles.completedTaskText]}>
                 {item.title}
               </Text>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={() => deleteTask(item.id)}
+            >
+              <Text style={styles.deleteButtonText}>Delete</Text>
+            </TouchableOpacity>
+          </View>
         )}
         ListEmptyComponent={<Text style={styles.emptyText}>No tasks for this day.</Text>}
       />
@@ -215,15 +244,39 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
+  taskRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   taskItem: {
+    flex: 1,
     padding: 12,
     marginVertical: 6,
     backgroundColor: '#440000',
     borderRadius: 8,
   },
+  completedTaskItem: {
+    backgroundColor: '#220000', // Darker background for completed tasks
+  },
   taskText: {
     fontSize: 16,
     color: '#FFFFFF',
+  },
+  completedTaskText: {
+    textDecorationLine: 'line-through',
+    opacity: 0.5,
+    color: '#AAAAAA', // grey color to indicate completion
+  },
+  deleteButton: {
+    padding: 8,
+    backgroundColor: '#FF453A',
+    borderRadius: 6,
+    marginLeft: 8,
+  },
+  deleteButtonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
   },
   emptyText: {
     textAlign: 'center',
