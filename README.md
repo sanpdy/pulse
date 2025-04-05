@@ -1,50 +1,78 @@
-# Welcome to your Expo app 👋
+# 🌗 FlowForge
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**FlowForge** is a dual-mode productivity and mindfulness app built with **React Native**.  
+You can switch between **Flow**, a space for rest and reflection, and **Forge**, a space for productivity and focus.
 
-## Get started
+Designed to support your **mental clarity** and **task discipline**, FlowForge offers tools rooted in mindfulness science and productivity psychology.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 🔮 Modes
 
-2. Start the app
+### 🌿 Flow — Mindfulness Mode
 
-   ```bash
-    npx expo start
-   ```
+**Flow** is where you slow down. Reconnect with your breath, reflect on your day, and recenter.
 
-In the output, you'll find options to open the app in a
+Features:
+- 🧘‍♂️ **Breathing Exercises**
+  - **4-7-8**: Calm your nervous system with this classic breathing pattern.
+  - **Box Breathing**: Inhale – Hold – Exhale – Hold — all for 4 seconds each.
+- 🌲 **Soundscapes**
+  - Nature sounds to create a serene mental environment — rain, forest, ocean, and more.
+- 📝 **Daily Quotes**
+  - One calming or inspiring quote is served each day to reflect on.
+- 🧙 **Sage – Your Zen Assistant**
+  - Talk to **Sage**, an AI assistant powered by the **Gemini API**.
+  - Ask questions, vent, or explore mindful practices through conversation.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 🔨 Forge — Productivity Mode
 
-## Get a fresh project
+**Forge** is where focus is forged. Eliminate procrastination and get things done.
 
-When you're ready, run:
+Features:
+- 🗓️ **Task Calendar**
+  - Create, schedule, and organize tasks.
+  - Push notifications ensure you stay on track until you **explicitly start the task**.
+- ⏱️ **Pomodoro Timer**
+  - Focus in 25-minute bursts with scheduled breaks.
+  - Motion detection via **gyroscope/accelerometer** — if you pick up your phone during focus time, a cat photo appears to nudge you gently back on track 🐱.
+- 💬 **Searganet – Your Motivational Strategist**
+  - Chat with **Searganet**, a Gemini-powered AI productivity assistant.
+  - Get help breaking down big tasks, setting goals, or just finding motivation to begin.
+
+---
+
+## 🔧 Built With
+
+- ⚛️ **React Native**
+- 📲 **Expo**
+- 🔔 **Local Notifications (React Native Notifications)**
+- 🎤 **Gemini API (Google Generative AI)**
+- 🎧 **Expo AV for soundscapes**
+- 📦 AsyncStorage for local persistence
+- 📅 React Native Calendars
+- 📟 DeviceMotion & Accelerometer from Expo Sensors
+
+---
+
+## 🧪 Future Features & Ideas
+
+> Want to contribute or expand? Here’s what’s cooking:
+
+- Emotion-aware check-ins that personalize Sage’s advice
+- Mood-predicting "Aura Forecast"
+- Real-time productivity/mindfulness insights dashboard
+- AI-generated dreamscapes
+- Deeper Sage/Searganet integration with tone analysis
+
+---
+
+## 🛠️ Installation
 
 ```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+git clone https://github.com/yourusername/flowforge.git
+cd flowforge
+npm install
+npx expo start
