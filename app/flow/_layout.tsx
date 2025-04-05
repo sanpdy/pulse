@@ -14,6 +14,7 @@ export default function FlowLayout() {
         <Stack.Screen name="breathing" />
         <Stack.Screen name="soundscapes" />
         <Stack.Screen name="quotes" />
+        <Stack.Screen name="chat" />
       </Stack>
     </>
   );

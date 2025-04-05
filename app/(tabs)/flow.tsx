@@ -35,6 +35,14 @@ export default function FlowScreen() {
             <Text style={styles.optionText}>Quotes</Text>
             <Text style={styles.optionDescription}>Find inspiration</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.option, styles.chatOption]} 
+            onPress={() => router.push('/flow/chat')}
+          >
+            <Text style={styles.optionText}>Sage</Text>
+            <Text style={styles.optionDescription}>Talk with a Zen therapist</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -77,6 +85,10 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(76, 175, 80, 0.3)',
   },
   quotesOption: {
+    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+    borderColor: 'rgba(76, 175, 80, 0.3)',
+  },
+  chatOption: {
     backgroundColor: 'rgba(76, 175, 80, 0.1)',
     borderColor: 'rgba(76, 175, 80, 0.3)',
   },
