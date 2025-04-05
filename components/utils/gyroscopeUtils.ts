@@ -1,0 +1,1 @@
+npx react-native link react-native-sensors
