@@ -12,7 +12,7 @@ export default function GrindScreen() {
         await scheduleNotification({
             title: "Zen Forging",
             desc: (Date.now() + 4 * 60 * 60 * 1000) + " You Were Saying? " + Date.now(),
-            time: Date.now() + 4 * 60 * 60 * 1000,// 10 seconds
+            time: new Date(),// 10 seconds
         });
 
         alert("Notification Set?");
