@@ -106,9 +106,12 @@ const styles = StyleSheet.create({
   emoji: {
     fontSize: 30,
     marginRight: 15,
+    width: 40,
+    textAlign: 'center',
   },
   textContainer: {
     flex: 1,
+    flexDirection: 'column',
   },
   menuTitle: {
     fontSize: 18,
