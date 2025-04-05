@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0acee27e-5e6b-4bf2-b418-1523d1d3eb08" name="Changes" comment="remove expo-dev-client" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="notification_module" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;amwells-git&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/sanpdy/pulse.git",
+    "accountId": "566a1ecc-1dda-4d43-9b6b-afccbb1d83ad"
+  },
+  "recentNewPullRequestHead": {
+    "server": {
+      "useHttp": false,
+      "host": "github.com",
+      "port": null,
+      "suffix": null
+    },
+    "owner": "sanpdy",
+    "repository": "pulse"
+  }
+}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2vHwUR5sFw0Bv3pZUWopXCJG2FT" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Personal Code Projects/hackathon/pulse",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "terminal",
+    "ts.external.directory.path": "D:\\Personal Code Projects\\hackathon\\pulse\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-WS-243.25659.40" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0acee27e-5e6b-4bf2-b418-1523d1d3eb08" name="Changes" comment="" />
+      <created>1743815324041</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1743815324041</updated>
+      <workItem from="1743820579603" duration="22055000" />
+    </task>
+    <task id="LOCAL-00001" summary="Switching to webstorm">
+      <option name="closed" value="true" />
+      <created>1743820241338</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743820241338</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Notification Module Setup, Needs action implementation">
+      <option name="closed" value="true" />
+      <created>1743833468504</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1743833468504</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Notification Module Setup, Needs action implementation">
+      <option name="closed" value="true" />
+      <created>1743833519917</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743833519917</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Updated notification model in prep for &quot;database&quot; integration">
+      <option name="closed" value="true" />
+      <created>1743838780943</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1743838780943</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Commited unversioned files">
+      <option name="closed" value="true" />
+      <created>1743842668858</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1743842668858</updated>
+    </task>
+    <task id="LOCAL-00006" summary="merged notification module and forge side">
+      <option name="closed" value="true" />
+      <created>1743844432449</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1743844432449</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Setup task storage file and adjusted calendar.tsx and notificationModule.ts to have working notifications and task storage. Visual Completion Status potentially not working">
+      <option name="closed" value="true" />
+      <created>1743877467086</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1743877467086</updated>
+    </task>
+    <task id="LOCAL-00008" summary="remove expo-dev-client">
+      <option name="closed" value="true" />
+      <created>1743879776210</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1743879776210</updated>
+    </task>
+    <task id="LOCAL-00009" summary="remove expo-dev-client">
+      <option name="closed" value="true" />
+      <created>1743879911529</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1743879911529</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Switching to webstorm" />
+    <MESSAGE value="Notification Module Setup, Needs action implementation" />
+    <MESSAGE value="Updated notification model in prep for &quot;database&quot; integration" />
+    <MESSAGE value="Commited unversioned files" />
+    <MESSAGE value="merged notification module and forge side" />
+    <MESSAGE value="Setup task storage file and adjusted calendar.tsx and notificationModule.ts to have working notifications and task storage. Visual Completion Status potentially not working" />
+    <MESSAGE value="remove expo-dev-client" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove expo-dev-client" />
+  </component>
+</project>
