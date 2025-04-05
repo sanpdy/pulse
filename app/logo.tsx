@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import { View, StyleSheet, Animated } from 'react-native';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
@@ -30,12 +30,17 @@ export default function LogoScreen() {
   return (
     <View style={styles.container}>
       <StatusBar style="light" hidden={true} />
-      <Animated.View style={[styles.content, {
-        opacity: fadeAnim,
-        transform: [{ scale: scaleAnim }],
-      }]}>
-        <Text style={styles.logo}>FlowForge</Text>
-      </Animated.View>
+      <Animated.Image
+        source={require('../assets/images/flowForgeLogo.png')}
+        style={[
+          styles.logo,
+          {
+            opacity: fadeAnim,
+            transform: [{ scale: scaleAnim }],
+          },
+        ]}
+        resizeMode="contain"
+      />
     </View>
   );
 }
@@ -47,13 +52,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  content: {
-    alignItems: 'center',
-  },
   logo: {
-    fontSize: 48,
-    fontWeight: '300',
-    color: '#FFFFFF',
-    letterSpacing: 8,
+    width: 200,  
+    height: 200,
   },
-}); 
+});

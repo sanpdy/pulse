@@ -26,13 +26,13 @@ export function PomodoroTimer() {
   };
 
   return (
-    <View style={[styles.container]}>
+    <View style={styles.container}>
       <Text style={styles.modeText}>{mode}</Text>
       <CountdownCircleTimer
         key={timerKey} // Use the timerKey to reset the timer
         isPlaying={isRunning}
         duration={durations[mode]}
-        colors={['#007BFF', '#F7B801', '#A30000']}
+        colors={['#FF4136', '#FF6347', '#A30000']}
         colorsTime={[durations[mode], durations[mode] / 2, 0]}
         onComplete={() => {
           setIsRunning(false);
@@ -50,13 +50,13 @@ export function PomodoroTimer() {
         }}
       </CountdownCircleTimer>
       <View style={styles.buttons}>
-      <TouchableOpacity style={[styles.button]} onPress={() => setIsRunning((prev) => !prev)}>
-        <Text style={styles.buttonText}>{isRunning ? 'Pause' : 'Start'}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={[styles.button]} onPress={handleReset}>
-        <Text style={styles.buttonText}>Reset</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.button} onPress={() => setIsRunning((prev) => !prev)}>
+          <Text style={styles.buttonText}>{isRunning ? 'Pause' : 'Start'}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleReset}>
+          <Text style={styles.buttonText}>Reset</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.modeButtons}>
         <TouchableOpacity style={styles.modeButton} onPress={() => handleModeSwitch('Pomodoro')}>
           <Text style={styles.modeButtonText}>Pomodoro</Text>
@@ -71,69 +71,71 @@ export function PomodoroTimer() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'transparent', // Set background to transparent
+    backgroundColor: '#330000', // Dark red background for the component
   },
   modeText: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#FFFFFF', // Keep text white
+    color: '#FFFFFF', // White text for contrast
   },
   timerText: {
     fontSize: 48,
     fontWeight: 'bold',
-    color: '#FFFFFF', // Keep text white
+    color: '#FFFFFF', // White timer text for readability
   },
   buttons: {
     flexDirection: 'row',
-    justifyContent: 'space-around', // Space buttons evenly
-    alignItems: 'center', // Align buttons vertically
+    justifyContent: 'space-around', // Evenly space buttons
+    alignItems: 'center',
     marginTop: 20,
     width: '100%',
   },
   button: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#FF4136', // Red-based primary button color
     paddingVertical: 12,
     paddingHorizontal: 25,
     borderRadius: 12,
-    shadowColor: '#000', // Add shadow for depth
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.4,
     shadowRadius: 6,
-    elevation: 8, // For Android shadow
+    elevation: 8,
   },
   buttonText: {
-    color: '#FFFFFF', // Keep text white
+    color: '#FFFFFF', // White text for clarity
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   modeButtons: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 20,
-    width: '100%',
   },
   modeButton: {
-    backgroundColor: '#28A745',
+    backgroundColor: '#A30000', // Dark red for mode buttons
+    color: '#FFFFFF',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 12,
-    marginHorizontal: 5,
-    shadowColor: '#000', // Add shadow for depth
+    marginHorizontal: 10, // Increased margin for spacing
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.4,
     shadowRadius: 6,
-    elevation: 8, // For Android shadow
+    elevation: 8,
   },
   modeButtonText: {
-    color: '#FFFFFF', // Keep text white
+    color: '#FFFFFF', // White text for mode buttons
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',

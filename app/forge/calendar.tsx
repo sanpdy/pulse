@@ -4,6 +4,7 @@ import { Calendar } from 'react-native-calendars';
 import { useRouter } from 'expo-router';
 import * as taskStorage from '../../services/taskStorage';
 import { requestNotificationPermissions, scheduleTaskNotifications } from "../../services/notificationModule";
+import Header from './Header';
 
 export default function TasksScreen() {
   const router = useRouter();
@@ -13,12 +14,10 @@ export default function TasksScreen() {
   const [currentStreak, setCurrentStreak] = useState(0);
   const [lastCheckedDate, setLastCheckedDate] = useState<string | null>(null);
 
-  // Load tasks from AsyncStorage when the component mounts
   useEffect(() => {
     taskStorage.loadTasks().then(setTasks);
   }, []);
 
-  // Save tasks to AsyncStorage whenever they change
   useEffect(() => {
     const saveTasks = async () => {
       try {
@@ -30,7 +29,6 @@ export default function TasksScreen() {
     saveTasks();
   }, [tasks]);
 
-  // Every time the tasks update (or when the component mounts), check if we've crossed midnight
   useEffect(() => {
     const now = new Date();
     const currentDate = now.toISOString().split('T')[0];
@@ -124,11 +122,8 @@ export default function TasksScreen() {
     <SafeAreaView style={styles.container}>
       {/* Header with Back Button */}
       <View style={styles.headerContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={goBack}>
-          <Text style={styles.backButtonText}>← Back</Text>
-        </TouchableOpacity>
+        <Header title="Calendar" />
       </View>
-
       <Text style={styles.title}>📅 Select a Date</Text>
 
       <Calendar
@@ -190,6 +185,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     marginTop: 20,
+    paddingTop: 40,
   },
   backButton: {
     marginBottom: 10,

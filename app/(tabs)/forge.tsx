@@ -20,7 +20,7 @@ const menuOptions = [
     id: 'pomodoro',
     title: 'Pomodoro',
     description: 'Focus and track time',
-    // image: require('../../assets/images/pomodoro.jpg'),
+    image: require('../../assets/images/pomodoro.jpg'),
   },
 ];
 

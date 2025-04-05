@@ -2,27 +2,40 @@ import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { PomodoroTimer } from '../../components/PomodoroTimer';
 import GyroscopeDisplay from '../../components/GyroscopeDisplay';
+import Header from './Header'; // Adjust path if needed
 
 export default function PomodoroScreen() {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.section}>
-        <PomodoroTimer />
+    <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <Header title="Pomodoro" />
       </View>
-      <View style={styles.section}>
-        <GyroscopeDisplay />
-      </View>
-    </ScrollView>
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.section}>
+          <PomodoroTimer />
+        </View>
+        <View style={styles.section}>
+          <GyroscopeDisplay />
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    padding: 20,
+    flex: 1,
     backgroundColor: '#330000', // Dark red background
   },
+  headerContainer: {
+    marginTop: 20,
+    paddingTop: 40,
+  },
+  content: {
+    flexGrow: 1,
+    padding: 20,
+  },
   section: {
-    marginBottom: 30, // Add spacing between components
+    marginBottom: 30, // Spacing between components
   },
 });

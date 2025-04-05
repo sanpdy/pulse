@@ -4,7 +4,16 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import Header from './Header';
@@ -36,10 +45,13 @@ export default function ChatScreen() {
 
   useEffect(() => {
     // Start with a fresh greeting each time
-    setMessages([{
-      role: 'assistant',
-      content: 'LISTEN UP, MAGGOT! I\'M YOUR DRILL SERGEANT AND I\'M HERE TO TURN YOU INTO A WARRIOR! WHAT\'S YOUR EXCUSE FOR WASTING MY TIME TODAY?'
-    }]);
+    setMessages([
+      {
+        role: 'assistant',
+        content:
+          'LISTEN UP, MAGGOT! I\'M YOUR DRILL SERGEANT AND I\'M HERE TO TURN YOU INTO A WARRIOR! WHAT\'S YOUR EXCUSE FOR WASTING MY TIME TODAY?',
+      },
+    ]);
   }, []);
 
   const handleSend = async () => {
@@ -53,21 +65,26 @@ export default function ChatScreen() {
 
     try {
       // Initialize the Gemini API with the latest 2.5 Pro Preview model
-      const genAI = new GoogleGenerativeAI(process.env.EXPO_PUBLIC_GEMINI_API_KEY || '');
-      const model = genAI.getGenerativeModel({ 
-        model: "gemini-2.5-pro-exp-03-25",
+      const genAI = new GoogleGenerativeAI(
+        process.env.EXPO_PUBLIC_GEMINI_API_KEY || ''
+      );
+      const model = genAI.getGenerativeModel({
+        model: 'gemini-2.5-pro-exp-03-25',
         generationConfig: {
           temperature: 0.7,
           topK: 40,
           topP: 0.95,
           maxOutputTokens: 1024,
-        }
+        },
       });
 
       // Format the conversation history for Gemini
-      const conversationHistory = newMessages.map(msg => 
-        `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`
-      ).join('\n');
+      const conversationHistory = newMessages
+        .map(
+          (msg) =>
+            `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`
+        )
+        .join('\n');
 
       const prompt = `${systemPrompt}\n\nPrevious conversation:\n${conversationHistory}\n\nAssistant:`;
 
@@ -84,76 +101,97 @@ export default function ChatScreen() {
       setMessages(updatedMessages);
     } catch (error) {
       console.error('Error sending message:', error);
-      setMessages([...newMessages, {
-        role: 'assistant',
-        content: 'I apologize, but I seem to be having trouble connecting. Please try again later.'
-      }]);
+      setMessages([
+        ...newMessages,
+        {
+          role: 'assistant',
+          content:
+            'I apologize, but I seem to be having trouble connecting. Please try again later.',
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Header title="DRILL SERGEANT" />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardAvoidingView}
-      >
-        <ScrollView
-          ref={scrollViewRef}
-          onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
-          style={styles.messagesContainer}
+    <View style={styles.outerContainer}>
+      <View style={styles.headerContainer}>
+        <Header title="Drill Sergeant" />
+      </View>
+      <View style={styles.container}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.keyboardAvoidingView}
         >
-          {messages.map((message, index) => (
-            <View
-              key={index}
-              style={[
-                styles.messageBubble,
-                message.role === 'user' ? styles.userBubble : styles.assistantBubble,
-              ]}
-            >
-              <Text style={styles.messageText}>{message.content}</Text>
-            </View>
-          ))}
-          {isLoading && (
-            <View style={styles.loadingBubble}>
-              <Text style={styles.messageText}>...</Text>
-            </View>
-          )}
-        </ScrollView>
-        <View style={[styles.inputContainer, { bottom: insets.bottom + 20 }]}>
-          <TextInput
-            style={styles.input}
-            value={input}
-            onChangeText={setInput}
-            placeholder="REPORT YOUR STATUS, SOLDIER!"
-            placeholderTextColor="#666"
-            multiline
-            blurOnSubmit={false}
-            onSubmitEditing={() => {
-              if (input.trim()) {
-                handleSend();
-              }
-            }}
-          />
-          <TouchableOpacity
-            style={styles.sendButton}
-            onPress={handleSend}
-            disabled={isLoading}
+          <ScrollView
+            ref={scrollViewRef}
+            onContentSizeChange={() =>
+              scrollViewRef.current?.scrollToEnd({ animated: true })
+            }
+            style={styles.messagesContainer}
           >
-            <Ionicons name="send" size={24} color="#424242" />
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
+            {messages.map((message, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.messageBubble,
+                  message.role === 'user'
+                    ? styles.userBubble
+                    : styles.assistantBubble,
+                ]}
+              >
+                <Text style={styles.messageText}>{message.content}</Text>
+              </View>
+            ))}
+            {isLoading && (
+              <View style={styles.loadingBubble}>
+                <Text style={styles.messageText}>...</Text>
+              </View>
+            )}
+          </ScrollView>
+          <View
+            style={[styles.inputContainer, { bottom: insets.bottom + 20 }]}
+          >
+            <TextInput
+              style={styles.input}
+              value={input}
+              onChangeText={setInput}
+              placeholder="REPORT YOUR STATUS, SOLDIER!"
+              placeholderTextColor="#ccc"
+              multiline
+              blurOnSubmit={false}
+              onSubmitEditing={() => {
+                if (input.trim()) {
+                  handleSend();
+                }
+              }}
+            />
+            <TouchableOpacity
+              style={styles.sendButton}
+              onPress={handleSend}
+              disabled={isLoading}
+            >
+              <Ionicons name="send" size={24} color="#FFFFFF" />
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    flex: 1,
+  },
+  headerContainer: {
+    marginTop: 20,
+    paddingTop: 40,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#1A1A1A', // Dark military background
+    backgroundColor: '#330000', // Dark reddish background
   },
   keyboardAvoidingView: {
     flex: 1,
@@ -169,21 +207,21 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   userBubble: {
-    backgroundColor: '#2A3A2C', // Military green for user messages
+    backgroundColor: '#7F0000', // Dark red for user messages
     alignSelf: 'flex-end',
   },
   assistantBubble: {
-    backgroundColor: '#4A4A4A', // Dark grey for drill sergeant messages
+    backgroundColor: '#A30000', // Reddish tone for drill sergeant messages
     alignSelf: 'flex-start',
   },
   loadingBubble: {
-    backgroundColor: '#4A4A4A',
+    backgroundColor: '#A30000',
     alignSelf: 'flex-start',
     padding: 12,
     borderRadius: 20,
   },
   messageText: {
-    color: '#FFFFFF', // White text for better contrast
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '500',
   },
@@ -193,9 +231,9 @@ const styles = StyleSheet.create({
     right: 16,
     flexDirection: 'row',
     padding: 16,
-    backgroundColor: '#2A3A2C', // Military green for input container
+    backgroundColor: '#660000', // Reddish input container
     borderTopWidth: 1,
-    borderTopColor: '#4A4A4A',
+    borderTopColor: '#A30000',
     borderRadius: 30,
     alignItems: 'center',
   },
@@ -210,7 +248,7 @@ const styles = StyleSheet.create({
     maxHeight: 100,
   },
   sendButton: {
-    backgroundColor: '#4A4A4A',
+    backgroundColor: '#B22222', // Reddish send button
     width: 40,
     height: 40,
     borderRadius: 20,
